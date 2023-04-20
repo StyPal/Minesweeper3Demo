@@ -1,5 +1,5 @@
-class Plane(private var difficulty: Difficulty) {
-    private lateinit var plane: Array<Array<Type?>>
+class Plane(difficulty: Difficulty) {
+    lateinit var plane: Array<Array<Type?>>
     private lateinit var minePositions: ArrayList<Position>
     private var generator = Generator(plane)
 

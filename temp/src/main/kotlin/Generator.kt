@@ -43,7 +43,6 @@ class Generator(private var plane: Array<Array<Type?>>) {
     }
 
     private fun isSurrounded(r: Int, c: Int): Boolean {
-        var count = 0
         for (dr in -1..1) {
             for (dc in -1..1) {
                 if (dr == 0 && dc == 0) {
@@ -55,11 +54,11 @@ class Generator(private var plane: Array<Array<Type?>>) {
                 // Überprüfe, ob die neue Position innerhalb der Grenzen des gameCube liegt
                 if (nr >= 0 && nr < plane.size && nc >= 0 && nc < plane[0].size) {
                     if (plane[nr][nc] === Type.MINE) {
-                        count++
+                        return true
                     }
                 }
             }
         }
-        return count > 0
+        return false
     }
 }
