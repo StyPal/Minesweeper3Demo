@@ -10,13 +10,14 @@ class Generator(private var plane: Array<Array<Type?>>) {
      */
     fun generateMines(siteLength: Int, freePosCount: Int): ArrayList<Position> {
         minePositions = getAllPos(siteLength)
-        plane.forEach { _ ->
+        try {
             for (mine in 0 until freePosCount) {
                 val index = random.nextInt(0, minePositions.size)
                 val tempPos = minePositions[index]
                 plane[tempPos.row][tempPos.col] = Type.EMPTY
                 minePositions.removeAt(index)
             }
+        } catch (_: IllegalArgumentException) {
         }
         setNearMines()
         return minePositions
@@ -35,7 +36,8 @@ class Generator(private var plane: Array<Array<Type?>>) {
     private fun setNearMines() {
         plane.forEachIndexed { r, rows ->
             rows.forEachIndexed { c, _ ->
-                if (plane[r][c] == Type.EMPTY) { isSurrounded(r, c)
+                if (plane[r][c] == Type.EMPTY) {
+                    isSurrounded(r, c)
                     plane[r][c] = Type.NEAR_MINE
                 }
             }
