@@ -1,4 +1,4 @@
-class Generator(private var plane: Array<Array<Type?>>) {
+class Generator(private var plane: Array<Array<Field?>>) {
     private var random: java.util.Random = java.util.Random()
     private var minePositions = ArrayList<Position>()
 
@@ -19,7 +19,10 @@ class Generator(private var plane: Array<Array<Type?>>) {
             for (mine in 0 until freePosCount) {
                 val index = random.nextInt(0, minePositions.size)
                 val tempPos = minePositions[index]
-                plane[tempPos.row][tempPos.col] = Type.EMPTY
+                val field = plane[tempPos.row][tempPos.col]
+                field?.let {
+                    it.type = Type.EMPTY
+                }
                 minePositions.removeAt(index)
             }
         } catch (_: IllegalArgumentException) {
@@ -41,9 +44,12 @@ class Generator(private var plane: Array<Array<Type?>>) {
     private fun setNearMines() {
         plane.forEachIndexed { r, rows ->
             rows.forEachIndexed { c, _ ->
-                if (plane[r][c] == Type.EMPTY) {
-                    if (isSurrounded(r, c)) {
-                        plane[r][c] = Type.NEAR_MINE
+                val field = plane[r][c]
+                field?.let {
+                    if (it.type == Type.EMPTY) {
+                        if (isSurrounded(r, c)) {
+                            it.type = Type.NEAR_MINE
+                        }
                     }
                 }
             }
@@ -61,8 +67,11 @@ class Generator(private var plane: Array<Array<Type?>>) {
 
                 // Überprüfe, ob die neue Position innerhalb der Grenzen des gameCube liegt
                 if (nr >= 0 && nr < plane.size && nc >= 0 && nc < plane[0].size) {
-                    if (plane[nr][nc] === Type.MINE) {
-                        return true
+                    val field = plane[nr][nc]
+                    field?.let {
+                        if (it.type == Type.MINE) {
+                            return true
+                        }
                     }
                 }
             }
