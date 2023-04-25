@@ -27,7 +27,7 @@ class Cube(difficulty: Difficulty) {
                         }
                         if (field.type == Type.EMPTY) {
                             val value = calcSurroundings(p, r, c)
-                            if (value > 0){
+                            if (value > 0) {
                                 field.type = Type.NEAR_MINE
                                 field.value = value
                             }
@@ -61,13 +61,34 @@ class Cube(difficulty: Difficulty) {
         return count
     }
 
-    fun openPosition(pos: Position, planeNumber: Int) {
+    fun changeStateOfField(pos: Position, planeNumber: Int, isMarkSelected: Boolean) {
         val field = cube[planeNumber].plane[pos.row][pos.col]
         field?.let {
+            if (it.state == State.OPENED) {
+                return
+            }
+            if (isMarkSelected) {
+                it.state = when (it.state) {
+                    State.CLOSED -> State.MARKED
+                    else -> State.CLOSED
+                }
+                return
+            }
+            if (it.state == State.MARKED) {
+                return
+            }
+            //Should already be checked (if loose)
             if (it.type == Type.MINE) {
                 return
             }
+            //Open
+            openPosition(pos, planeNumber)
         }
+    }
+
+
+    private fun openPosition(pos: Position, planeNumber: Int) {
+        //TODO
     }
 
     fun printFirstPlane() {
@@ -77,9 +98,8 @@ class Cube(difficulty: Difficulty) {
                     col?.let {
                         when (it.type) {
                             Type.MINE -> print("X ")
-                            Type.NEAR_MINE -> print("! ")
+                            Type.NEAR_MINE -> print("${it.value} ")
                             Type.EMPTY -> print("  ")
-                            else -> print("? ")
                         }
                     }
                 }

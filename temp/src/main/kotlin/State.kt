@@ -1,3 +1,3 @@
 enum class State {
-    OPENED, CLOSED;
+    OPENED, MARKED, CLOSED;
 }
