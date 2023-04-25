@@ -77,8 +77,9 @@ class Cube(difficulty: Difficulty) {
             if (it.state == State.MARKED) {
                 return
             }
-            //Should already be checked (if loose)
+            //Should already be checked after if a bomb was opened
             if (it.type == Type.MINE) {
+                it.state = State.OPENED //and loose
                 return
             }
             //Open
@@ -88,7 +89,14 @@ class Cube(difficulty: Difficulty) {
 
 
     private fun openPosition(pos: Position, planeNumber: Int) {
-        //TODO
+        val field = cube[planeNumber].plane[pos.row][pos.col]
+        field?.let {
+            if (it.type == Type.NEAR_MINE){
+                it.state = State.OPENED
+                return
+            }
+            //TODO
+        }
     }
 
     fun printFirstPlane() {
