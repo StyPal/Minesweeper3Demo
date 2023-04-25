@@ -1,5 +1,5 @@
 
 fun main() {
-    val cube = Cube(Difficulty.LUCK_BASED)
+    val cube = Cube(Difficulty.VERY_EASY)
     cube.printFirstPlane()
 }

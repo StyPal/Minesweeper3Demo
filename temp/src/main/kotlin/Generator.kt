@@ -42,8 +42,9 @@ class Generator(private var plane: Array<Array<Type?>>) {
         plane.forEachIndexed { r, rows ->
             rows.forEachIndexed { c, _ ->
                 if (plane[r][c] == Type.EMPTY) {
-                    isSurrounded(r, c)
-                    plane[r][c] = Type.NEAR_MINE
+                    if (isSurrounded(r, c)) {
+                        plane[r][c] = Type.NEAR_MINE
+                    }
                 }
             }
         }
