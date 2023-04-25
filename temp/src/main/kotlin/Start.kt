@@ -1,5 +1,5 @@
 
 fun main() {
-    var cube =
-        Cube(Difficulty.EASY)
+    val cube = Cube(Difficulty.LUCK_BASED)
+    cube.printFirstPlane()
 }

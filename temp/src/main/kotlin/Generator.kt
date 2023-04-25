@@ -7,8 +7,13 @@ class Generator(private var plane: Array<Array<Type?>>) {
      * positions for mines for each level
      *
      * @param freePosCount Count of Mines free Positions in one plane
+     * @param siteLength
      */
     fun generateMines(siteLength: Int, freePosCount: Int): ArrayList<Position> {
+        val fieldCount = siteLength * siteLength
+        if (freePosCount > fieldCount || freePosCount < 1) {
+            throw IllegalArgumentException()
+        }
         minePositions = getAllPos(siteLength)
         try {
             for (mine in 0 until freePosCount) {

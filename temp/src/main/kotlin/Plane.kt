@@ -1,7 +1,7 @@
 class Plane(difficulty: Difficulty) {
     var plane: Array<Array<Type?>> = Array(0) { arrayOfNulls(0) }
+    var state: Array<Array<State?>> = Array(0) { arrayOfNulls(0) }
     private lateinit var minePositions: ArrayList<Position>
-    private var generator = Generator(plane)
 
     init {
         when (difficulty) {
@@ -18,8 +18,20 @@ class Plane(difficulty: Difficulty) {
         plane = Array(siteLength) {
             arrayOfNulls(siteLength)
         }
+        state = Array(siteLength) {
+            arrayOfNulls(siteLength)
+        }
         fillCubeMines()
-        minePositions = generator.generateMines(siteLength, siteLength * siteLength - mineCountPerPlain)
+        fillState()
+        minePositions = Generator(plane).generateMines(siteLength, siteLength * siteLength - mineCountPerPlain)
+    }
+
+    private fun fillState() {
+        state.forEachIndexed { r, row ->
+            row.forEachIndexed { c, _ ->
+                state[r][c] = State.CLOSED
+            }
+        }
     }
 
 

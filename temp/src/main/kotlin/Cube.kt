@@ -20,9 +20,11 @@ class Cube (difficulty: Difficulty){
         cube.forEachIndexed { p, plane ->
             plane.plane.forEachIndexed { r, row ->
                 row.forEachIndexed { c, _ ->
-                    val box: Type? = cube[p].plane[r][c]
-                    if (box == Type.NEAR_MINE){
-                        box.setValue(calcSurroundings(p,r,c))
+                    cube[p].plane[r][c]?.let {
+                        val type = it
+                        if (type == Type.NEAR_MINE){
+                            type.setValue(calcSurroundings(p,r,c))
+                        }
                     }
                 }
             }
@@ -49,4 +51,27 @@ class Cube (difficulty: Difficulty){
         }
         return count
     }
+
+    fun openPosition(pos: Position, planeNumber: Int){
+        if(cube[planeNumber].plane[pos.row][pos.col] == Type.MINE){
+            return
+        }
+    }
+
+    fun printFirstPlane(){
+        for (plane in cube){
+            plane.plane.forEachIndexed { r, row ->
+                row.forEachIndexed { c, col ->
+                    when (col) {
+                        Type.MINE -> print("X ")
+                        Type.NEAR_MINE -> print("${col.getValue()} ")
+                        else -> print("  ")
+                    }
+                }
+                println()
+            }
+            println()
+        }
+    }
+
 }
